@@ -3,11 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
 
-class UserSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,11 +15,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::insert([
-            'name' => 'Administrator',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-            'role_id' => 1,
+        Role::insert([
+            'id' => 1,
+            'display_name' => 'Administrator',
+            'description' => 'super user',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

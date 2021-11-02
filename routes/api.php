@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthApiController;
+use App\Http\Controllers\RoleApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,26 @@ Route::middleware(['auth:sanctum'])->group(function () {
         '/auth/get-auth',
         [AuthApiController::class, 'getAuth']
     );
+
+    Route::middleware(['admin'])->group(function () {
+        // ================================================================================================
+        // Role Controller
+        // ================================================================================================
+        Route::post(
+            '/role/store',
+            [RoleApiController::class, 'store']
+        );
+        Route::get(
+            '/role/get',
+            [RoleApiController::class, 'get']
+        );
+        Route::post(
+            '/role/update/{role}',
+            [RoleApiController::class, 'update']
+        );
+        Route::delete(
+            '/role/delete/{role}',
+            [RoleApiController::class, 'delete']
+        );
+    });
 });

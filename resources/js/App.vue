@@ -9,6 +9,36 @@
         </template>
       </vs-navbar>
       <vs-sidebar absolute v-model="active" :open.sync="activeSidebar">
+        <div @click="pushRouter('Dashboard')">
+          <vs-sidebar-item id="Dashboard"> Dashboard </vs-sidebar-item>
+        </div>
+
+        <vs-sidebar-group>
+          <template #header>
+            <vs-sidebar-item arrow> User Management </vs-sidebar-item>
+          </template>
+
+          <div @click="pushRouter('Role')">
+            <vs-sidebar-item id="Role"> Roles </vs-sidebar-item>
+          </div>
+          <div @click="pushRouter('User')">
+            <vs-sidebar-item id="User"> User </vs-sidebar-item>
+          </div>
+        </vs-sidebar-group>
+
+        <vs-sidebar-group>
+          <template #header>
+            <vs-sidebar-item arrow> Expense Management </vs-sidebar-item>
+          </template>
+
+          <!-- <div @click="pushRouter('Expense Category')"> -->
+            <vs-sidebar-item id="Expense Category"> Expense Categories </vs-sidebar-item>
+          <!-- </div> -->
+          <!-- <div @click="pushRouter('Expense')"> -->
+            <vs-sidebar-item id="Expense"> Expenses </vs-sidebar-item>
+          <!-- </div> -->
+        </vs-sidebar-group>
+
         <template #footer>
           <div @click="logout()">
             <vs-sidebar-item>Logout</vs-sidebar-item>

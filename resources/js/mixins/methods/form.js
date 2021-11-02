@@ -9,7 +9,32 @@ const processFormErrors = (component, err) => {
     }
 };
 
+const resetForm = (component) => {
+    Object.assign(component.$data.form, component.$options.data().form);
+    Object.assign(component.$data.error, component.$options.data().error);
+};
+
+const showDeleteConfirmation = (component, name) => {
+    component
+        .$swal({
+            icon: "question",
+            title: "Delete Confirmation",
+            text: `Are you sure you want to delete "${name}"?`,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+            if (result.value) {
+                component.delete();
+            }
+        });
+};
+
 export default {
     processForm,
     processFormErrors,
+    resetForm,
+    showDeleteConfirmation,
 };

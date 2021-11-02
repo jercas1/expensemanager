@@ -11,7 +11,18 @@ const routes = [
         meta: {
             auth: true,
         },
-        children: [],
+        children: [
+            {
+                name: "Dashboard",
+                path: "dashboard",
+                component: () => import("../components/Dashboard/Index"),
+            },
+            {
+                name: "Role",
+                path: "role",
+                component: () => import("../components/Role/Index"),
+            },
+        ],
     },
     {
         path: "/*",

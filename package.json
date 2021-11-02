@@ -25,12 +25,13 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "vue-router": "^3.5.3",
-        "vuesax": "^4.0.1-alpha.25",
-        "vuex": "^3.6.2",
+        "boxicons": "^2.0.8",
         "stylus": "^0.54.7",
         "stylus-loader": "^3.0.2",
         "vue-axios": "^3.2.4",
-        "boxicons": "^2.0.8"
+        "vue-router": "^3.5.3",
+        "vue-sweetalert2": "^5.0.2",
+        "vuesax": "^4.0.1-alpha.25",
+        "vuex": "^3.6.2"
     }
 }

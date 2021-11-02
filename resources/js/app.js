@@ -4,6 +4,7 @@ import Vue from "vue";
 import App from "./App.vue";
 
 import created from "./created";
+import "./filters";
 import "./mixins/index";
 import router from "./router";
 import store from "./store";
@@ -15,6 +16,10 @@ Vue.use(Vuesax, {
 });
 
 import "boxicons";
+
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+Vue.use(VueSweetalert2);
 
 Vue.config.productionTip = false;
 
