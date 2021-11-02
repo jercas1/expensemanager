@@ -52,7 +52,7 @@ class RoleApiController extends Controller
 
     public function update(StoreRoleRequest $request, Role $role)
     {
-        if ($role->id == 1) {
+        if ($role->id === 1) {
             return response()->json([
                 'success' => false,
                 'title' => 'Update Unsuccessful',
@@ -81,7 +81,7 @@ class RoleApiController extends Controller
 
     public function delete(Request $request, Role $role)
     {
-        if ($role->id == 1) {
+        if ($role->id === 1) {
             return response()->json([
                 'success' => false,
                 'title' => 'Delete Unsuccessful',

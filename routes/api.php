@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthApiController;
 use App\Http\Controllers\RoleApiController;
+use App\Http\Controllers\UserApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,26 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete(
             '/role/delete/{role}',
             [RoleApiController::class, 'delete']
+        );
+
+        // ================================================================================================
+        // User Controller
+        // ================================================================================================
+        Route::post(
+            '/user/store',
+            [UserApiController::class, 'store']
+        );
+        Route::get(
+            '/user/get',
+            [UserApiController::class, 'get']
+        );
+        Route::post(
+            '/user/update/{user}',
+            [UserApiController::class, 'update']
+        );
+        Route::delete(
+            '/user/delete/{user}',
+            [UserApiController::class, 'delete']
         );
     });
 });

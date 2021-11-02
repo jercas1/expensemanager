@@ -22,6 +22,11 @@ const routes = [
                 path: "role",
                 component: () => import("../components/Role/Index"),
             },
+            {
+                name: "User",
+                path: "user",
+                component: () => import("../components/User/Index"),
+            },
         ],
     },
     {
