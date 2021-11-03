@@ -97,7 +97,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get(
             '/expense-category/get',
             [ExpenseCategoryApiController::class, 'get']
-        );
+        )->withoutMiddleware(['admin']);
         Route::post(
             '/expense-category/update/{expense_category}',
             [ExpenseCategoryApiController::class, 'update']

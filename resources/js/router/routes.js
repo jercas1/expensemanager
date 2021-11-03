@@ -21,16 +21,25 @@ const routes = [
                 name: "Role",
                 path: "role",
                 component: () => import("../components/Role/Index"),
+                meta: {
+                    admin: true,
+                },
             },
             {
                 name: "User",
                 path: "user",
                 component: () => import("../components/User/Index"),
+                meta: {
+                    admin: true,
+                },
             },
             {
                 name: "Expense Category",
                 path: "expense-category",
                 component: () => import("../components/ExpenseCategory/Index"),
+                meta: {
+                    admin: true,
+                },
             },
             {
                 name: "Expense",

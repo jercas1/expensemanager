@@ -15,15 +15,14 @@ router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem("user");
     const user = JSON.parse(loggedIn);
 
-    if (
-        loggedIn &&
-        to.matched.some((route) => route.meta.auth)
-    ) {
-        if (user.admin) {
+    if (loggedIn && to.matched.some((route) => route.meta.auth)) {
+        if (user.user.role_id === 1) {
             next();
         } else {
             if (!to.matched.some((route) => route.meta.admin)) {
                 next();
+            } else {
+                next({ name: "Dashboard" });
             }
         }
     } else if (loggedIn) {

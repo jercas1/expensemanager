@@ -13,7 +13,7 @@
           <vs-sidebar-item id="Dashboard"> Dashboard </vs-sidebar-item>
         </div>
 
-        <vs-sidebar-group>
+        <vs-sidebar-group v-if="user.role_id === 1">
           <template #header>
             <vs-sidebar-item arrow> User Management </vs-sidebar-item>
           </template>
@@ -31,7 +31,7 @@
             <vs-sidebar-item arrow> Expense Management </vs-sidebar-item>
           </template>
 
-          <div @click="pushRouter('Expense Category')">
+          <div @click="pushRouter('Expense Category')" v-if="user.role_id === 1">
             <vs-sidebar-item id="Expense Category"> Expense Categories </vs-sidebar-item>
           </div>
           <div @click="pushRouter('Expense')">
