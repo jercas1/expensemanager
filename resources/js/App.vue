@@ -31,12 +31,12 @@
             <vs-sidebar-item arrow> Expense Management </vs-sidebar-item>
           </template>
 
-          <!-- <div @click="pushRouter('Expense Category')"> -->
+          <div @click="pushRouter('Expense Category')">
             <vs-sidebar-item id="Expense Category"> Expense Categories </vs-sidebar-item>
-          <!-- </div> -->
-          <!-- <div @click="pushRouter('Expense')"> -->
+          </div>
+          <div @click="pushRouter('Expense')">
             <vs-sidebar-item id="Expense"> Expenses </vs-sidebar-item>
-          <!-- </div> -->
+          </div>
         </vs-sidebar-group>
 
         <template #footer>

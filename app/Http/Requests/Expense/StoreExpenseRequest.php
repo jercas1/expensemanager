@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Requests\Expense;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class StoreExpenseRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'expense_category_id' => [
+                'required',
+                'int',
+                Rule::exists('expense_categories', 'id')->where(function ($query) {
+                    $query->whereNull('deleted_at');
+                }),
+            ],
+            'amount' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|between:0,99999999',
+            'entry_date' => 'required|date',
+        ];
+    }
+}

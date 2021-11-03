@@ -27,6 +27,16 @@ const routes = [
                 path: "user",
                 component: () => import("../components/User/Index"),
             },
+            {
+                name: "Expense Category",
+                path: "expense-category",
+                component: () => import("../components/ExpenseCategory/Index"),
+            },
+            {
+                name: "Expense",
+                path: "expense",
+                component: () => import("../components/Expense/Index"),
+            },
         ],
     },
     {

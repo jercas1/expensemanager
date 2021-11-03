@@ -1,11 +1,21 @@
 <template>
   <div>
-    <h1>DASHBOARD INDEX</h1>
+    <CategoryChart />
+
+    <PeriodicalChart />
   </div>
 </template>
 
 <script>
-export default {};
+import CategoryChart from "./CategoryChart/Index";
+import PeriodicalChart from "./PeriodicalChart/Index";
+
+export default {
+  components: {
+    CategoryChart,
+    PeriodicalChart,
+  }
+};
 </script>
 
 <style>

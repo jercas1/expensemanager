@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthApiController;
 use App\Http\Controllers\RoleApiController;
 use App\Http\Controllers\UserApiController;
+use App\Http\Controllers\ExpenseCategoryApiController;
+use App\Http\Controllers\ExpenseApiController;
+use App\Http\Controllers\DashboardApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,5 +86,58 @@ Route::middleware(['auth:sanctum'])->group(function () {
             '/user/delete/{user}',
             [UserApiController::class, 'delete']
         );
+
+        // ================================================================================================
+        // Expense Category Controller
+        // ================================================================================================
+        Route::post(
+            '/expense-category/store',
+            [ExpenseCategoryApiController::class, 'store']
+        );
+        Route::get(
+            '/expense-category/get',
+            [ExpenseCategoryApiController::class, 'get']
+        );
+        Route::post(
+            '/expense-category/update/{expense_category}',
+            [ExpenseCategoryApiController::class, 'update']
+        );
+        Route::delete(
+            '/expense-category/delete/{expense_category}',
+            [ExpenseCategoryApiController::class, 'delete']
+        );
     });
+
+    // ================================================================================================
+    // Expense Controller
+    // ================================================================================================
+    Route::post(
+        '/expense/store',
+        [ExpenseApiController::class, 'store']
+    );
+    Route::get(
+        '/expense/get',
+        [ExpenseApiController::class, 'get']
+    );
+    Route::post(
+        '/expense/update/{expense}',
+        [ExpenseApiController::class, 'update']
+    );
+    Route::delete(
+        '/expense/delete/{expense}',
+        [ExpenseApiController::class, 'delete']
+    );
+
+    // ================================================================================================
+    // Dashboard Controller
+    // ================================================================================================
+    Route::get(
+        '/dashboard/get-category-chart-data',
+        [DashboardApiController::class, 'getCategoryChart']
+    );
+
+    Route::get(
+        '/dashboard/get-periodical-chart-data',
+        [DashboardApiController::class, 'getPeriodicalChart']
+    );
 });
