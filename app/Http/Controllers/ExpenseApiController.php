@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Expense;
 use App\Http\Requests\Expense\StoreExpenseRequest;
+use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Requests\Expense\DeleteExpenseRequest;
 
 class ExpenseApiController extends Controller
@@ -55,7 +56,7 @@ class ExpenseApiController extends Controller
         ]);
     }
 
-    public function update(StoreExpenseRequest $request, Expense $expense)
+    public function update(UpdateExpenseRequest $request, Expense $expense)
     {
         $validated = $request->validated();
 

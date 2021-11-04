@@ -4,17 +4,18 @@ namespace App\Http\Requests\Expense;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 
-class StoreExpenseRequest extends FormRequest
+class UpdateExpenseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(Request $request)
     {
-        return true;
+        return $request->user()->id === $this->route('expense')->user_id;
     }
 
     /**
