@@ -8,12 +8,13 @@ use App\Models\Expense;
 
 class DashboardApiController extends Controller
 {
-    public function getCategoryChart() {
+    public function getCategoryChart(Request $request) {
         $data = Expense::selectRaw('
             expense_categories.display_name,
             SUM(expenses.amount) AS amount_total
         ')
             ->join('expense_categories', 'expenses.expense_category_id', 'expense_categories.id')
+            ->where('expenses.user_id', $request->user()->id)
             ->groupBy('expense_categories.display_name')
             ->get();
 
@@ -33,6 +34,7 @@ class DashboardApiController extends Controller
                 YEAR(expenses.entry_date) AS year
             ')
                 ->join('expense_categories', 'expenses.expense_category_id', 'expense_categories.id')
+                ->where('expenses.user_id', $request->user()->id)
                 ->groupBy('expense_categories.display_name', 'year')
                 ->orderBy('year')
                 ->get();
@@ -43,9 +45,13 @@ class DashboardApiController extends Controller
                 MONTH(expenses.entry_date) AS month
             ')
                 ->join('expense_categories', 'expenses.expense_category_id', 'expense_categories.id')
-                ->whereBetween('expenses.entry_date', [$request->input('start'), $request->input('end')])
-                ->orWhereDate('expenses.entry_date', $request->input('start'))
-                ->orWhereDate('expenses.entry_date', $request->input('end'))
+                ->where(function ($query) use ($request) {
+                    $query
+                        ->whereBetween('expenses.entry_date', [$request->input('start'), $request->input('end')])
+                        ->orWhereDate('expenses.entry_date', $request->input('start'))
+                        ->orWhereDate('expenses.entry_date', $request->input('end'));
+                })
+                ->where('expenses.user_id', $request->user()->id)
                 ->groupBy('expense_categories.display_name', 'month')
                 ->get();
         } else if ($request->input('periodicity') == 'Day') {
@@ -55,9 +61,13 @@ class DashboardApiController extends Controller
                 DATE(expenses.entry_date) AS date
             ')
                 ->join('expense_categories', 'expenses.expense_category_id', 'expense_categories.id')
-                ->whereBetween('expenses.entry_date', [$request->input('start'), $request->input('end')])
-                ->orWhereDate('expenses.entry_date', $request->input('start'))
-                ->orWhereDate('expenses.entry_date', $request->input('end'))
+                ->where(function ($query) use ($request) {
+                    $query
+                        ->whereBetween('expenses.entry_date', [$request->input('start'), $request->input('end')])
+                        ->orWhereDate('expenses.entry_date', $request->input('start'))
+                        ->orWhereDate('expenses.entry_date', $request->input('end'));
+                })
+                ->where('expenses.user_id', $request->user()->id)
                 ->groupBy('expense_categories.display_name', 'date')
                 ->get();
         }
