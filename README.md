@@ -1,3 +1,49 @@
+<strong class="mb-2">From the programmer:</strong>
+<p>
+Hello, I am Jerry, the examiner of this project. I have created two
+versions for the role module which can be found in the following
+branches.
+</p>
+<ul>
+<li><strong>main</strong> branch</li>
+<li><strong>rolerevision</strong> branch</li>
+</ul>
+<p>
+The <strong>main</strong> branch follows the role module as the
+instruction say (or so I thought) and the the
+<strong>rolerevision</strong> branch where the superadmin can select
+only which functions can be used for a certain role.
+</p>
+
+<p>Please check out my rolerevision version :)</p>
+
+<p>You can try the rolerevision version by switching branch to <strong>rolerevision</strong>. Make sure to run <strong>npm run dev/prod</strong> after switching branch to compile the frontend.</p>
+
+<p>
+Also, before using the system, make sure to run the seeder. You can
+run it with the command
+</p>
+<p><strong>php artisan db:seed</strong></p>
+
+<strong>Users Credentials:</strong>
+<ul>
+<li>
+    Email: <strong>admin@gmail.com</strong> Password:
+    <strong>password</strong>
+</li>
+<li>
+    Email: <strong>user1@gmail.com</strong> Password:
+    <strong>password</strong>
+</li>
+</ul>
+
+<p>
+Should you have any problem regarding the project, you can contact
+me through my email,
+<strong>jerryconstantinecastro@gmail.com</strong> or my contact
+number, <strong>0920 836 2220</strong>
+</p>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
