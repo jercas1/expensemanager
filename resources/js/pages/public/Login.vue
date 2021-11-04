@@ -66,7 +66,7 @@ export default {
         .dispatch("auth/login", this.form)
         .then((res) => {
           if (res.data.success) {
-            this.$router.push({ name: `${res.data.user.type} Index` });
+            this.$router.push({ name: 'Dashboard' });
 
             this.$vs.notification({
               color: "success",

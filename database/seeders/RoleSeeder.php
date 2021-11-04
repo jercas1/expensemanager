@@ -18,7 +18,15 @@ class RoleSeeder extends Seeder
         Role::insert([
             'id' => 1,
             'display_name' => 'Administrator',
-            'description' => 'super user',
+            'description' => 'Superuser',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Role::insert([
+            'id' => 2,
+            'display_name' => 'User',
+            'description' => 'User',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
