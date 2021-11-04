@@ -15,7 +15,7 @@ class UpdateExpenseRequest extends FormRequest
      */
     public function authorize(Request $request)
     {
-        $request->user()->id === $this->route('expense')->user_id;
+        return $request->user()->id === $this->route('expense')->user_id;
     }
 
     /**
