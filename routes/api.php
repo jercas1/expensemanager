@@ -46,7 +46,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         [AuthApiController::class, 'getAuth']
     );
 
-    Route::middleware(['admin'])->group(function () {
+    Route::middleware(['auth.role'])->group(function () {
         // ================================================================================================
         // Role Controller
         // ================================================================================================
@@ -65,6 +65,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete(
             '/role/delete/{role}',
             [RoleApiController::class, 'delete']
+        );
+        Route::get(
+            '/role/get-role-function',
+            [RoleApiController::class, 'getRoleFunction']
         );
 
         // ================================================================================================
@@ -97,7 +101,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get(
             '/expense-category/get',
             [ExpenseCategoryApiController::class, 'get']
-        )->withoutMiddleware(['admin']);
+        );
         Route::post(
             '/expense-category/update/{expense_category}',
             [ExpenseCategoryApiController::class, 'update']
@@ -106,27 +110,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
             '/expense-category/delete/{expense_category}',
             [ExpenseCategoryApiController::class, 'delete']
         );
-    });
 
-    // ================================================================================================
-    // Expense Controller
-    // ================================================================================================
-    Route::post(
-        '/expense/store',
-        [ExpenseApiController::class, 'store']
-    );
-    Route::get(
-        '/expense/get',
-        [ExpenseApiController::class, 'get']
-    );
-    Route::post(
-        '/expense/update/{expense}',
-        [ExpenseApiController::class, 'update']
-    );
-    Route::delete(
-        '/expense/delete/{expense}',
-        [ExpenseApiController::class, 'delete']
-    );
+        // ================================================================================================
+        // Expense Controller
+        // ================================================================================================
+        Route::post(
+            '/expense/store',
+            [ExpenseApiController::class, 'store']
+        );
+        Route::get(
+            '/expense/get',
+            [ExpenseApiController::class, 'get']
+        );
+        Route::post(
+            '/expense/update/{expense}',
+            [ExpenseApiController::class, 'update']
+        );
+        Route::delete(
+            '/expense/delete/{expense}',
+            [ExpenseApiController::class, 'delete']
+        );
+    });
 
     // ================================================================================================
     // Dashboard Controller
@@ -135,9 +139,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         '/dashboard/get-category-chart-data',
         [DashboardApiController::class, 'getCategoryChart']
     );
-
     Route::get(
         '/dashboard/get-periodical-chart-data',
         [DashboardApiController::class, 'getPeriodicalChart']
+    );
+
+    Route::get(
+        '/role/get-auth-role-function',
+        [RoleApiController::class, 'getAuthRoleFunction']
     );
 });

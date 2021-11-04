@@ -13,7 +13,7 @@
           <vs-sidebar-item id="Dashboard"> Dashboard </vs-sidebar-item>
         </div>
 
-        <vs-sidebar-group v-if="user.role_id === 1">
+        <vs-sidebar-group v-if="user.role_id === 1 || true">
           <template #header>
             <vs-sidebar-item arrow> User Management </vs-sidebar-item>
           </template>
@@ -31,8 +31,13 @@
             <vs-sidebar-item arrow> Expense Management </vs-sidebar-item>
           </template>
 
-          <div @click="pushRouter('Expense Category')" v-if="user.role_id === 1">
-            <vs-sidebar-item id="Expense Category"> Expense Categories </vs-sidebar-item>
+          <div
+            @click="pushRouter('Expense Category')"
+            v-if="user.role_id === 1 || true"
+          >
+            <vs-sidebar-item id="Expense Category">
+              Expense Categories
+            </vs-sidebar-item>
           </div>
           <div @click="pushRouter('Expense')">
             <vs-sidebar-item id="Expense"> Expenses </vs-sidebar-item>
@@ -57,7 +62,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      active: "Udf",
+      active: "Dashboard",
       activeSidebar: false,
     };
   },

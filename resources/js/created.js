@@ -6,6 +6,7 @@ const created = () => {
     const userData = JSON.parse(userInfo);
     store.commit("auth/setUser", userData);
     store.dispatch("auth/getAuth");
+    store.dispatch("auth/getAuthRoleFunction");
   }
 }
 

@@ -1,5 +1,7 @@
 const user = null;
+const user_functions = [];
 
 export default {
-  user,
-}
+    user,
+    user_functions,
+};

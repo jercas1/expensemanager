@@ -14,7 +14,7 @@ class StoreExpenseCategoryRequest extends FormRequest
      */
     public function authorize(Request $request)
     {
-        return $request->user()->role_id === 1;
+        return true;
     }
 
     /**

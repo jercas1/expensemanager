@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Role;
+use App\Models\RoleFunction;
+use App\Models\RoleDetail;
+use App\Models\User;
 use App\Http\Requests\Role\StoreRoleRequest;
 
 class RoleApiController extends Controller
@@ -17,9 +20,23 @@ class RoleApiController extends Controller
         $response = DB::transaction(function () use ($request, $validated) {
             $role = new Role;
             foreach ($validated as $key => $value) {
-                $role[$key] = $value;
+                if ($key !== 'role_details') {
+                    $role[$key] = $value;
+                }
             }
             $role->save();
+
+            if (array_key_exists('role_details', $validated)) {
+                $data = [];
+                $role_detail = new RoleDetail;
+                $role_detail->role_id = $role->id;
+                foreach ($validated['role_details'] as $value) {
+                    $role_detail->role_function_id = $value;
+                    array_push($data, $role_detail->toArray());
+                }
+
+                RoleDetail::insert($data);
+            }
 
             return response()->json([
                 'success' => true,
@@ -34,7 +51,7 @@ class RoleApiController extends Controller
 
     public function get(Request $request)
     {
-        $roles = Role::get();
+        $roles = Role::with('roleDetails')->get();
 
         return response()->json([
             'success' => true,
@@ -52,21 +69,30 @@ class RoleApiController extends Controller
 
     public function update(StoreRoleRequest $request, Role $role)
     {
-        if ($role->id === 1) {
-            return response()->json([
-                'success' => false,
-                'title' => 'Update Unsuccessful',
-                'message' => 'The administrator role cannot be updated.',
-            ]);
-        } // TODO can be move to gate
-
         $validated = $request->validated();
 
         $response = DB::transaction(function () use ($request, $validated, $role) {
             foreach ($validated as $key => $value) {
-                $role[$key] = $value;
+                if ($key !== 'role_details') {
+                    $role[$key] = $value;
+                }
             }
             $role->save();
+
+            RoleDetail::where('role_id', $role->id)
+                ->when(array_key_exists('role_details', $validated), function ($query) use ($validated) {
+                    $query->whereNotIn('role_function_id', $validated['role_details']);
+                })
+                ->delete();
+
+            if (array_key_exists('role_details', $validated)) {
+                $role_detail = new RoleDetail;
+                $role_detail->role_id = $role->id;
+                foreach ($validated['role_details'] as $value) {
+                    $role_detail->role_function_id = $value;
+                    RoleDetail::firstOrCreate($role_detail->toArray());
+                }
+            }
 
             return response()->json([
                 'success' => true,
@@ -81,14 +107,6 @@ class RoleApiController extends Controller
 
     public function delete(Request $request, Role $role)
     {
-        if ($role->id === 1) {
-            return response()->json([
-                'success' => false,
-                'title' => 'Delete Unsuccessful',
-                'message' => 'The administrator role cannot be deleted.',
-            ]);
-        } // TODO can be move to gate
-
         $response = DB::transaction(function () use ($role, $request) {
             $role->delete();
 
@@ -100,5 +118,30 @@ class RoleApiController extends Controller
         });
 
         return $response;
+    }
+
+    public function getRoleFunction(Request $request)
+    {
+        $role_functions = RoleFunction::get();
+
+        return response()->json([
+            'success' => true,
+            'role_functions' => $role_functions,
+        ]);
+    }
+
+    public function getAuthRoleFunction(Request $request)
+    {
+        $user_functions = User::select('role_functions.*')
+        ->join('roles', 'users.role_id', 'roles.id')
+        ->join('role_details', 'roles.id', 'role_details.role_id')
+        ->join('role_functions', 'role_details.role_function_id', 'role_functions.id')
+        ->where('users.id', $request->user()->id)
+        ->get();
+
+        return response()->json([
+            'success' => true,
+            'user_functions' => $user_functions,
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize(Request $request)
     {
-        return $request->user()->role_id === 1;
+        return true;
     }
 
     /**
@@ -27,6 +28,7 @@ class StoreRoleRequest extends FormRequest
         return [
             'display_name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'role_details.*' => 'nullable|int|exists:role_functions,id',
         ];
     }
 }

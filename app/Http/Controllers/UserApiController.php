@@ -57,14 +57,6 @@ class UserApiController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        if ($user->role_id === 1) {
-            return response()->json([
-                'success' => false,
-                'title' => 'Update Unsuccessful',
-                'message' => 'The user with a role of administrator cannot be updated.',
-            ]);
-        } // TODO can be move to gate
-
         $validated = $request->validated();
 
         $response = DB::transaction(function () use ($request, $validated, $user) {
@@ -92,14 +84,6 @@ class UserApiController extends Controller
 
     public function delete(Request $request, User $user)
     {
-        if ($user->role_id === 1) {
-            return response()->json([
-                'success' => false,
-                'title' => 'Delete Unsuccessful',
-                'message' => 'The user with a role of administrator cannot be deleted.',
-            ]);
-        } // TODO can be move to gate
-
         $response = DB::transaction(function () use ($user, $request) {
             $user->delete();
 

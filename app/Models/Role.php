@@ -14,4 +14,9 @@ class Role extends Model
         'display_name',
         'description',
     ];
+
+    public function roleDetails()
+    {
+        return $this->hasMany(RoleDetail::class);
+    }
 }
