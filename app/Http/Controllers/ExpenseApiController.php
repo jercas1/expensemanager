@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Expense;
 use App\Http\Requests\Expense\StoreExpenseRequest;
+use App\Http\Requests\Expense\DeleteExpenseRequest;
 
 class ExpenseApiController extends Controller
 {
@@ -19,6 +20,7 @@ class ExpenseApiController extends Controller
             foreach ($validated as $key => $value) {
                 $expense[$key] = $value;
             }
+            $expense['user_id'] = $request->user()->id;
             $expense->save();
 
             return response()->json([
@@ -36,6 +38,7 @@ class ExpenseApiController extends Controller
     {
         $expenses = Expense::select('expenses.*', 'expense_categories.display_name AS expense_category_display_name')
             ->join('expense_categories', 'expenses.expense_category_id', 'expense_categories.id')
+            ->where('expenses.user_id', $request->user()->id)
             ->get();
 
         return response()->json([
@@ -73,7 +76,7 @@ class ExpenseApiController extends Controller
         return $response;
     }
 
-    public function delete(Request $request, Expense $expense)
+    public function delete(DeleteExpenseRequest $request, Expense $expense)
     {
         $response = DB::transaction(function () use ($expense, $request) {
             $expense->delete();

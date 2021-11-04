@@ -11,6 +11,7 @@ class Expense extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'expense_category_id',
         'amount',
         'entry_date',
