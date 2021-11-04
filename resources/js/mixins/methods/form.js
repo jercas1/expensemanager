@@ -32,9 +32,14 @@ const showDeleteConfirmation = (component, name) => {
         });
 };
 
+const checkUserFunction = (user_functions, module, role_function) => {
+    return user_functions.findIndex(ufunction => ufunction.module === module && ufunction.function === role_function) >= 0 ? true : false;
+}
+
 export default {
     processForm,
     processFormErrors,
     resetForm,
     showDeleteConfirmation,
+    checkUserFunction,
 };

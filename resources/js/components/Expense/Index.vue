@@ -38,30 +38,38 @@
       type="button"
       class="btn btn-primary mt-3 float-right"
       data-toggle="modal"
-      data-target="#roleFormModal"
-      id="roleModalButton"
+      data-target="#expenseFormModal"
+      id="expenseModalButton"
+      v-show="checkUserFunction(user_functions, module, 'store')"
     >
       Add Expense
     </button>
 
     <div
       class="modal fade"
-      id="roleFormModal"
+      id="expenseFormModal"
       data-backdrop="static"
       data-keyboard="false"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ form.id ? "Update" : "Add" }} Expense</h5>
+            <h5 class="modal-title">
+              {{ form.id ? "Update" : "Add" }} Expense
+            </h5>
           </div>
           <div class="modal-body">
             <div class="container-fluid p-0">
               <div class="row">
                 <div class="col">
                   <div class="mb-3">
-                    <label for="expense_category_id" class="form-label">Expense Category</label>
-                    <select class="custom-select" v-model="form.expense_category_id">
+                    <label for="expense_category_id" class="form-label"
+                      >Expense Category</label
+                    >
+                    <select
+                      class="custom-select"
+                      v-model="form.expense_category_id"
+                    >
                       <option
                         :value="expense_category.id"
                         v-for="(expense_category, index) in expense_categories"
@@ -70,7 +78,10 @@
                         {{ expense_category.display_name }}
                       </option>
                     </select>
-                    <div class="invalid-feedback d-block" v-if="error.expense_category_id">
+                    <div
+                      class="invalid-feedback d-block"
+                      v-if="error.expense_category_id"
+                    >
                       {{ error.expense_category_id }}
                     </div>
                   </div>
@@ -97,14 +108,19 @@
               <div class="row">
                 <div class="col">
                   <div class="mb-3">
-                    <label for="entry_date" class="form-label">Entry Date</label>
+                    <label for="entry_date" class="form-label"
+                      >Entry Date</label
+                    >
                     <input
                       type="date"
                       class="form-control"
                       id="entry_date"
                       v-model="form.entry_date"
                     />
-                    <div class="invalid-feedback d-block" v-if="error.entry_date">
+                    <div
+                      class="invalid-feedback d-block"
+                      v-if="error.entry_date"
+                    >
                       {{ error.entry_date }}
                     </div>
                   </div>
@@ -120,6 +136,9 @@
                   class="btn btn-danger"
                   v-if="form.id"
                   @click="deleteConfirmation()"
+                  :disabled="
+                    !checkUserFunction(user_functions, module, 'delete')
+                  "
                 >
                   Delete
                 </button>
@@ -136,7 +155,18 @@
                 </button>
               </div>
               <div class="p-2">
-                <button type="button" class="btn btn-primary" @click="save()">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="save()"
+                  :disabled="
+                    !checkUserFunction(
+                      user_functions,
+                      module,
+                      form.id ? 'update' : 'store'
+                    )
+                  "
+                >
                   {{ form.id ? "Update" : "Save" }}
                 </button>
               </div>
@@ -149,9 +179,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
+      module: "Expense",
+
       expenses: [],
       expense_categories: [],
 
@@ -167,6 +201,10 @@ export default {
         entry_date: null,
       },
     };
+  },
+
+  computed: {
+    ...mapState("auth", ["user_functions"]),
   },
 
   created() {
@@ -191,7 +229,7 @@ export default {
     },
 
     deleteConfirmation() {
-      this.showDeleteConfirmation(this, 'expense');
+      this.showDeleteConfirmation(this, "expense");
     },
 
     delete() {
@@ -234,7 +272,7 @@ export default {
       this.form.amount = expense.amount;
       this.form.entry_date = expense.entry_date;
 
-      document.getElementById("roleModalButton").click();
+      document.getElementById("expenseModalButton").click();
     },
 
     save() {

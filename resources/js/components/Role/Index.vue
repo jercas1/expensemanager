@@ -38,6 +38,7 @@
       data-toggle="modal"
       data-target="#roleFormModal"
       id="roleModalButton"
+      v-show="checkUserFunction(user_functions, module, 'store')"
     >
       Add Role
     </button>
@@ -147,6 +148,9 @@
                   class="btn btn-danger"
                   v-if="form.id"
                   @click="deleteConfirmation()"
+                  :disabled="
+                    !checkUserFunction(user_functions, module, 'delete')
+                  "
                 >
                   Delete
                 </button>
@@ -163,7 +167,18 @@
                 </button>
               </div>
               <div class="p-2">
-                <button type="button" class="btn btn-primary" @click="save()">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="save()"
+                  :disabled="
+                    !checkUserFunction(
+                      user_functions,
+                      module,
+                      form.id ? 'update' : 'store'
+                    )
+                  "
+                >
                   {{ form.id ? "Update" : "Save" }}
                 </button>
               </div>
@@ -176,9 +191,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
+      module: "Role",
+
       roles: [],
       role_functions: [],
       role_function_modules: [],
@@ -195,12 +214,16 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState("auth", ["user_functions"]),
+  },
+
   created() {
     this.get();
     this.getRoleFunction();
   },
 
-  methods: {    
+  methods: {
     getRoleFunction() {
       this.axios
         .get("/role/get-role-function")
@@ -277,7 +300,9 @@ export default {
           (rfunction) => rfunction.id === element.role_function_id
         ).active = true;
 
-        document.getElementById(`rfunction${element.role_function_id}`).checked = true;
+        document.getElementById(
+          `rfunction${element.role_function_id}`
+        ).checked = true;
       });
 
       document.getElementById("roleModalButton").click();

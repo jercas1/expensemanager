@@ -38,15 +38,16 @@
       type="button"
       class="btn btn-primary mt-3 float-right"
       data-toggle="modal"
-      data-target="#roleFormModal"
-      id="roleModalButton"
+      data-target="#userFormModal"
+      id="userModalButton"
+      v-show="checkUserFunction(user_functions, module, 'store')"
     >
       Add User
     </button>
 
     <div
       class="modal fade"
-      id="roleFormModal"
+      id="userFormModal"
       data-backdrop="static"
       data-keyboard="false"
     >
@@ -159,6 +160,9 @@
                   class="btn btn-danger"
                   v-if="form.id"
                   @click="deleteConfirmation()"
+                  :disabled="
+                    !checkUserFunction(user_functions, module, 'delete')
+                  "
                 >
                   Delete
                 </button>
@@ -175,7 +179,18 @@
                 </button>
               </div>
               <div class="p-2">
-                <button type="button" class="btn btn-primary" @click="save()">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="save()"
+                  :disabled="
+                    !checkUserFunction(
+                      user_functions,
+                      module,
+                      form.id ? 'update' : 'store'
+                    )
+                  "
+                >
                   {{ form.id ? "Update" : "Save" }}
                 </button>
               </div>
@@ -188,9 +203,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
+      module: "User",
+
       users: [],
       roles: [],
 
@@ -199,8 +218,8 @@ export default {
         name: null,
         email: null,
         role_id: null,
-        password: '',
-        password_confirmation: '',
+        password: "",
+        password_confirmation: "",
       },
       error: {
         name: null,
@@ -210,6 +229,10 @@ export default {
         password_confirmation: null,
       },
     };
+  },
+
+  computed: {
+    ...mapState("auth", ["user_functions"]),
   },
 
   created() {
@@ -277,7 +300,7 @@ export default {
       this.form.email = user.email;
       this.form.role_id = user.role_id;
 
-      document.getElementById("roleModalButton").click();
+      document.getElementById("userModalButton").click();
     },
 
     save() {

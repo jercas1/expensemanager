@@ -36,17 +36,25 @@
       type="button"
       class="btn btn-primary mt-3 float-right"
       data-toggle="modal"
-      data-target="#roleFormModal"
-      id="roleModalButton"
+      data-target="#expenseCategoryFormModal"
+      id="expenseCategoryModalButton"
+      v-show="checkUserFunction(user_functions, module, 'store')"
     >
       Add Expense Category
     </button>
 
-    <div class="modal fade" id="roleFormModal" data-backdrop="static" data-keyboard="false">
+    <div
+      class="modal fade"
+      id="expenseCategoryFormModal"
+      data-backdrop="static"
+      data-keyboard="false"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ form.id ? "Update" : "Add" }} Expense Category</h5>
+            <h5 class="modal-title">
+              {{ form.id ? "Update" : "Add" }} Expense Category
+            </h5>
           </div>
           <div class="modal-body">
             <div class="container-fluid p-0">
@@ -103,6 +111,9 @@
                   class="btn btn-danger"
                   v-if="form.id"
                   @click="deleteConfirmation()"
+                  :disabled="
+                    !checkUserFunction(user_functions, module, 'delete')
+                  "
                 >
                   Delete
                 </button>
@@ -119,7 +130,14 @@
                 </button>
               </div>
               <div class="p-2">
-                <button type="button" class="btn btn-primary" @click="save()">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="save()"
+                  :disabled="
+                    !checkUserFunction(user_functions, module, form.id ? 'update' : 'store')
+                  "
+                >
                   {{ form.id ? "Update" : "Save" }}
                 </button>
               </div>
@@ -132,9 +150,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
+      module: "Expense Category",
+
       expense_categories: [],
 
       form: {
@@ -147,6 +169,10 @@ export default {
         description: null,
       },
     };
+  },
+
+  computed: {
+    ...mapState("auth", ["user_functions"]),
   },
 
   created() {
@@ -197,12 +223,12 @@ export default {
       this.form.display_name = expense_category.display_name;
       this.form.description = expense_category.description;
 
-      document.getElementById("roleModalButton").click();
+      document.getElementById("expenseCategoryModalButton").click();
     },
 
     save() {
       this.processForm(this);
-      
+
       if (!this.form.id) {
         this.axios
           .post("/expense-category/store", this.form)
