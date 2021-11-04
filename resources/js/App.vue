@@ -13,15 +13,15 @@
           <vs-sidebar-item id="Dashboard"> Dashboard </vs-sidebar-item>
         </div>
 
-        <vs-sidebar-group v-if="user.role_id === 1 || true">
+        <vs-sidebar-group>
           <template #header>
             <vs-sidebar-item arrow> User Management </vs-sidebar-item>
           </template>
 
-          <div @click="pushRouter('Role')">
+          <div @click="pushRouter('Role')" v-if="checkUserFunction('Role')">
             <vs-sidebar-item id="Role"> Roles </vs-sidebar-item>
           </div>
-          <div @click="pushRouter('User')">
+          <div @click="pushRouter('User')" v-if="checkUserFunction('User')">
             <vs-sidebar-item id="User"> User </vs-sidebar-item>
           </div>
         </vs-sidebar-group>
@@ -31,15 +31,18 @@
             <vs-sidebar-item arrow> Expense Management </vs-sidebar-item>
           </template>
 
-          <div
-            @click="pushRouter('Expense Category')"
-            v-if="user.role_id === 1 || true"
-          >
-            <vs-sidebar-item id="Expense Category">
+          <div @click="pushRouter('Expense Category')">
+            <vs-sidebar-item
+              id="Expense Category"
+              v-if="checkUserFunction('Expense Category')"
+            >
               Expense Categories
             </vs-sidebar-item>
           </div>
-          <div @click="pushRouter('Expense')">
+          <div
+            @click="pushRouter('Expense')"
+            v-if="checkUserFunction('Expense')"
+          >
             <vs-sidebar-item id="Expense"> Expenses </vs-sidebar-item>
           </div>
         </vs-sidebar-group>
@@ -68,10 +71,18 @@ export default {
   },
 
   computed: {
-    ...mapState("auth", ["user"]),
+    ...mapState("auth", ["user", "user_functions"]),
   },
 
   methods: {
+    checkUserFunction(module) {
+      return this.user_functions.findIndex(
+        (ufunction) => ufunction.module === module
+      ) >= 0
+        ? true
+        : false;
+    },
+
     pushRouter(route_name) {
       if (this.$route.name != route_name) {
         this.activeSidebar = false;
